@@ -1,22 +1,21 @@
 
 var path = require("path");
 
+let tableData = require("../db/db.json");
 //html routing
 
 module.exports = function(app) {
 
 
-  app.get("/notes", function(req, res) {
-    res.sendFile(path.join(__dirname, "./public/notes.html"));
+  app.get("/notes.html", function(req, res) {
+    res.sendFile(path.join(process.cwd(), "/public/notes.html"));
   });
 
 
   app.get("*", function(req, res) {
-    res.sendFile(path.join(__dirname, "./public/index.html"));
+    res.sendFile(path.join(process.cwd(), "/public/index.html"));
   });
 };
-
-
 
 
 

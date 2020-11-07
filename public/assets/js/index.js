@@ -1,3 +1,5 @@
+const { response } = require("express");
+
 const $noteTitle = $(".note-title");
 const $noteText = $(".note-textarea");
 const $saveNoteBtn = $(".save-note");
@@ -12,13 +14,16 @@ const getNotes = () => {
   return $.ajax({
     url: "/api/notes",
     method: "GET",
+  })
+  .then(function(response){
+    console.log(response)
   });
 };
 
 // A function for saving a note to the db
 const saveNote = (note) => {
   return $.ajax({
-    url: "/api/notes",
+    url: "./api/notes",
     data: note,
     method: "POST",
   });
@@ -148,4 +153,5 @@ $noteTitle.on("keyup", handleRenderSaveBtn);
 $noteText.on("keyup", handleRenderSaveBtn);
 
 // Gets and renders the initial list of notes
+alert("works")
 getAndRenderNotes();
