@@ -3,30 +3,29 @@
 
 const fs = require('fs');
 let rawTableData = fs.readFileSync('./db/db.json');
-
 let tableData = JSON.parse(rawTableData);
-
-
 
 
 module.exports = function(app) {
     app.get("/api/notes", function(req, res) {
-        console.log(tableData);
-        res.json(tableData);
+        return res.json(tableData);
       });
 
     app.post("/api/notes", function(req, res) {
+        req.body.id = tableData[tableData.length - 1].id +1 ;
+        req.body.id.toString()
         tableData.push(req.body);
-        console.log(tableData);
-        return res.json(tableData);
+        let tableDataString = JSON.stringify(tableData)
+        fs.writeFileSync('./db/db.json', tableDataString)
+        return res.json(tableDataString);
     });
 
     app.delete("/api/notes/:id", function(req, res) {
-        //select the tableData.length id +1
-        tableData = someArray.slice(req.id);
-        console.log(tableData);
-       // tableData.push(req.body);
-        res.json(tableData);
+        const toFilter = parseInt(req.params.id)
+        tableData = tableData.filter((item) => item.id !== toFilter)
+        let newTableData = JSON.stringify(tableData)
+        fs.writeFileSync('./db/db.json', newTableData)
+        return res.json(tableData);
     });
 }
 

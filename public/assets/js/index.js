@@ -1,4 +1,4 @@
-const { response } = require("express");
+// const { response } = require("express");
 
 const $noteTitle = $(".note-title");
 const $noteText = $(".note-textarea");
@@ -12,11 +12,8 @@ let activeNote = {};
 // A function for getting all notes from the db
 const getNotes = () => {
   return $.ajax({
-    url: "/api/notes",
+    url: "./api/notes",
     method: "GET",
-  })
-  .then(function(response){
-    console.log(response)
   });
 };
 
@@ -59,6 +56,7 @@ const handleNoteSave = function () {
   const newNote = {
     title: $noteTitle.val(),
     text: $noteText.val(),
+    id: $noteList.val(),
   };
 
   saveNote(newNote).then(() => {
@@ -74,11 +72,12 @@ const handleNoteDelete = function (event) {
 
   const note = $(this).parent(".list-group-item").data();
 
+
   if (activeNote.id === note.id) {
     activeNote = {};
   }
-
-  deleteNote(note.id).then(() => {
+  deleteNote(note.id).then((res) => {
+    console.log(res);
     getAndRenderNotes();
     renderActiveNote();
   });
@@ -153,5 +152,4 @@ $noteTitle.on("keyup", handleRenderSaveBtn);
 $noteText.on("keyup", handleRenderSaveBtn);
 
 // Gets and renders the initial list of notes
-alert("works")
 getAndRenderNotes();
