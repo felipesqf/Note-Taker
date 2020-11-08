@@ -12,12 +12,16 @@ module.exports = function(app) {
       });
 
     app.post("/api/notes", function(req, res) {
+        if (tableData.length == 0){
+            req.body.id= 1;
+        }else{
         req.body.id = tableData[tableData.length - 1].id +1 ;
+        }
         req.body.id.toString()
         tableData.push(req.body);
         let tableDataString = JSON.stringify(tableData)
         fs.writeFileSync('./db/db.json', tableDataString)
-        return res.json(tableDataString);
+        return res.json(tableData);
     });
 
     app.delete("/api/notes/:id", function(req, res) {
